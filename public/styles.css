@@ -1,0 +1,55 @@
+body {
+  padding: 0 38px;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header > h1 {
+  width: 70%;
+}
+
+nav {
+  width: 30%;
+}
+
+.navList {
+  display: flex;
+  justify-content: space-around;
+}
+
+.navList > li {
+  list-style: none;
+}
+a {
+  color: black;
+  text-decoration: none;
+}
+
+a:visited,
+a:active,
+a::after,
+a:hover {
+  font-weight: bold;
+}
+
+.active {
+  font-weight: bold;
+}
+
+input,
+textarea {
+  padding: 6px;
+}
+
+.itemContainer {
+  /* background-color: red; */
+}
+
+.itemImage {
+  width: 10rem;
+  height: 10rem;
+}

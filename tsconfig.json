@@ -11,7 +11,16 @@
     "target": "esnext",
     "types": [],
     "outDir": "./dist" /* Specify an output folder for all emitted files. */,
-
+    "baseUrl": "./",
+    "paths": {
+      "@controllers/*": ["src/controllers/*"],
+      "@routes/*": ["src/routes/*"],
+      "@middlewares/*": ["src/middlewares/*"],
+      "@views/*": ["src/views/*"],
+      "@styles/*": ["/public/*"],
+      "@db/*": ["src/db/*"],
+      "@utils/*": ["src/utils/*"]
+    },
     // For nodejs:
     // "lib": ["esnext"],
     // "types": ["node"],
