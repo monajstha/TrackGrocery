@@ -6,6 +6,19 @@
   <body>
     <header>
       <h1>TrackGrocery</h1>
+
+      <form method="get" action="/">
+          <select name="category" id="category" onchange="if(this.value===''){window.location='/' } else { this.form.submit(); }">
+            <option value="" 
+            <%= selectedCategory == "" ? "selected" : "" %>>All</option>
+            <% categories.forEach((category, index)=> { %>
+                <% const {category_id, category_name} = category %>
+                <option value="<%= category_id %>" 
+                    <%= selectedCategory == category_id ? "selected" : "" %>><%= category_name %></option>
+           <% }) %>
+          </select>
+      </form>
+
       <nav>
         <ul class="navList">
           <li>

@@ -22,21 +22,17 @@ export const createItem = (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-export const itemListGet = async (req: Request, res: Response) => {
+export const categoryListGet = async (req: Request, res: Response) => {
   try {
     const categories = await db.getAllCategories();
+    console.log(categories);
 
-    const { category } = req.query;
-    console.log('huhu', req.query, { category });
-    const items = await db.getAllItems(category);
-    res.render('index', {
-      title: 'Items',
-      items,
+    res.render('header', {
+      title: 'Categories',
       categories,
       path: req.path,
-      selectedCategory: category,
     });
   } catch (error) {
-    console.log('Error while getting items: ', error);
+    console.log('Error while getting categories: ', error);
   }
 };
