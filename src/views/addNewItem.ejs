@@ -1,0 +1,105 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="/styles.css" />
+    <script>
+      function validateForm(event) {
+        event.preventDefault();
+
+        const item_name = document.getElementById('item_name').value.trim();
+
+        if (!item_name) {
+          alert('Item name cannot be empty!');
+          return;
+        }
+
+        // If validation passes, submit the form
+        document.getElementById('newItemForm').submit();
+      }
+    </script>
+  </head>
+  <body>
+    <%- include('header') %>
+    <form
+      id="newItemForm"
+      method="post"
+      action="/item/new"
+      onsubmit="validateForm(event)"
+    >
+    <div class="inputContainer">
+      <div class="labelInputWrapper">
+        <label for="item_name">Item Name</label>
+        <input
+          class="nameInput"
+          type="text"
+          id="item_name"
+          name="item_name"
+          placeholder="Enter Item's name"
+        />
+      </div>
+
+      <div class="labelInputWrapper">
+        <label for="item_description">Item Description</label>
+        <input
+          class="nameInput"
+          type="text"
+          id="item_description"
+          name="item_description"
+          placeholder="Enter item description"
+        />
+      </div>
+
+      <div class="labelInputWrapper">
+        <label for="item_image">Item Image</label>
+        <input
+          class="nameInput"
+          type="file"
+          id="item_image"
+          name="item_image"
+        />
+      </div>
+
+      <div class="labelInputWrapper">
+        <label for="item_price">Item Price</label>
+
+        <input
+          class="nameInput"
+          type="number"
+          id="item_price"
+          name="item_price"
+          placeholder="Enter item price"
+        />
+      </div>
+
+      <div class="labelInputWrapper">
+        <label for="item_quantity">Item Quantity</label>
+
+        <input
+          class="nameInput"
+          type="number"
+          id="item_quantity"
+          name="item_quantity"
+          placeholder="Enter item quantity"
+        />
+      </div>
+
+      <div class="labelInputWrapper">
+
+      <label for="category_id">Select item's category</label>
+      <select name="category_id" id="category_id" >
+        <option value="" disabled selected hidden>Please select</option>
+        <% categories.forEach((category, index)=> { %>
+            <% const {category_id, category_name} = category %>
+            <option value="<%= category_id %>" ><%= category_name %></option>
+                
+       <% }) %>
+      </select>
+    </div>
+    <div class="labelInputWrapper">
+
+    <button class="submitBtn" type="submit">Submit</button>
+    </div>
+
+    </div>
+    </form>
+  </body>
+</html>

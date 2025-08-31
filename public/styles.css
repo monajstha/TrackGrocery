@@ -53,3 +53,32 @@ textarea {
   width: 10rem;
   height: 10rem;
 }
+
+.inputContainer {
+  display: flex;
+  width: 100%;
+  /* background-color: red; */
+  flex-wrap: wrap;
+}
+
+.labelInputWrapper {
+  display: flex;
+  padding: 12px;
+  align-items: flex-start;
+  width: 50%;
+  /* background-color: green; */
+  margin: 3px;
+}
+
+.labelInputWrapper > label {
+  margin-right: 8px;
+  width: 20%;
+  /* background-color: aqua; */
+}
+
+.submitBtn {
+  display: flex;
+  width: 40%;
+  justify-content: center;
+  align-self: center;
+}

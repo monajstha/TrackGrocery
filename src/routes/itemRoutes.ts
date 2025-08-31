@@ -1,9 +1,15 @@
 import { Router } from 'express';
-import { createItem, itemListGet } from '../controllers/itemController';
+import {
+  itemListGet,
+  newItemFormGet,
+  newItemPost,
+} from '../controllers/itemController';
 
 const router: Router = Router();
 
 router.get('/', itemListGet);
-router.post('/', createItem);
+router.get('/item/new', newItemFormGet);
+router.post('/item/new', newItemPost);
+// router.post('/', createItem);
 
 export default router;

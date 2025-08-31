@@ -1,31 +1,43 @@
 import { Request, Response, NextFunction } from 'express';
-import { Item, items } from '../models/item';
 import * as db from '../db/queries';
 
-// Create an item
-export const createItem = (req: Request, res: Response, next: NextFunction) => {
+// Get category form
+export const newCategoryFormGet = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
-    const { name, description, price, quantity, category_id, subcategory_id } =
-      req.body;
-    const newItem = {
-      name,
-      description,
-      price,
-      quantity,
-      category_id,
-      subcategory_id,
-    };
-    // items.push(newItem);
-    res.status(201).json(newItem);
+    console.log('cat path', req.path);
+    res.render('addNewCategory', {
+      title: 'Categories',
+      path: req.path,
+    });
+  } catch (error) {
+    console.log('Error while getting add new category form: ', error);
+  }
+};
+
+// Create a cagegory
+export const newCategoryPost = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    console.log('req.body', req.body);
+    const { category_name } = req.body;
+    await db.insertNewCategory(category_name);
+    res.status(201).redirect('/category/new');
   } catch (error) {
     next(error);
   }
 };
 
+// Get all categories
 export const categoryListGet = async (req: Request, res: Response) => {
   try {
     const categories = await db.getAllCategories();
-    console.log(categories);
 
     res.render('header', {
       title: 'Categories',

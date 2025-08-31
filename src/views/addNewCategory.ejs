@@ -1,0 +1,41 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="/styles.css" />
+    <script>
+      function validateForm(event) {
+        event.preventDefault();
+
+        const category_name = document
+          .getElementById('category_name')
+          .value.trim();
+
+        if (!category_name) {
+          alert('Category name cannot be empty!');
+          return;
+        }
+
+        // If validation passes, submit the form
+        document.getElementById('newCategoryForm').submit();
+      }
+    </script>
+  </head>
+  <body>
+    <%- include('header') %>
+    <form
+      id="newCategoryForm"
+      method="post"
+      action="/category/new"
+      onsubmit="validateForm(event)"
+    >
+      <input
+        class="nameInput"
+        type="text"
+        id="category_name"
+        name="category_name"
+        placeholder="Enter Category name"
+      />
+
+      <button class="sendBtn" type="submit">Submit</button>
+    </form>
+  </body>
+</html>

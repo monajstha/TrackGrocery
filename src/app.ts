@@ -1,10 +1,14 @@
 import express, { Express } from 'express';
 import { errorHandler } from './middlewares/errorHandler';
 import itemRoutes from './routes/itemRoutes';
+import categoryRoutes from './routes/categoryRoutes';
 import path from 'path';
 
 const app = express();
+
 app.use(express.json());
+// this app level express middleware parses form data to req.body
+app.use(express.urlencoded({ extended: true }));
 
 // declaring the use of ejs engine and to look for files inside views folder
 app.set('views', path.join(__dirname, './views'));
@@ -12,6 +16,7 @@ app.set('view engine', 'ejs');
 
 // Routes
 app.use('/', itemRoutes);
+app.use('/category/', categoryRoutes);
 
 // serve static assets
 const assetsPath = path.join(__dirname, '../public');

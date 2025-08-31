@@ -160,17 +160,6 @@ const main = async () => {
         Array.isArray(item_quantity)
       ) {
         for (let i = 0; i < item_name?.length; i++) {
-          console.log(
-            'INSIDE IF',
-            item_name[i],
-            item_description[i],
-            item_image[i],
-            item_price[i],
-            item_quantity[i],
-            category_id,
-            subcategory_id,
-          );
-
           await client.query(SQL_INSERT_QUERY_ITEMS, [
             item_name[i],
             item_description[i],
@@ -182,16 +171,6 @@ const main = async () => {
           ]);
         }
       } else {
-        console.log(
-          'INSIDE ELSE',
-          item_name,
-          item_description,
-          item_image,
-          item_price,
-          item_quantity,
-          category_id,
-          subcategory_id,
-        );
         await client.query(SQL_INSERT_QUERY_ITEMS, [
           item_name,
           item_description,

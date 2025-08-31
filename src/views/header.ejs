@@ -7,30 +7,22 @@
     <header>
       <h1>TrackGrocery</h1>
 
-      <form method="get" action="/">
-          <select name="category" id="category" onchange="if(this.value===''){window.location='/' } else { this.form.submit(); }">
-            <option value="" 
-            <%= selectedCategory == "" ? "selected" : "" %>>All</option>
-            <% categories.forEach((category, index)=> { %>
-                <% const {category_id, category_name} = category %>
-                <option value="<%= category_id %>" 
-                    <%= selectedCategory == category_id ? "selected" : "" %>><%= category_name %></option>
-           <% }) %>
-          </select>
-      </form>
-
       <nav>
         <ul class="navList">
           <li>
             <a href="/" class="<%= path === '/'? 'active': ''%>">Home</a>
           </li>
-          <!-- <li>
-            <a
-              href="/messages/new"
-              class="<%= path === '/messages/new'? 'active': ''%>"
-              >Send a Message</a
+          <li>
+            <a href="/category/new" class="<%= path === '/new'? 'active': ''%>"
+              >Add Category</a
             >
-          </li> -->
+          </li>
+
+          <li>
+            <a href="/item/new" class="<%= path === '/item/new'? 'active': ''%>"
+              >Add Item</a
+            >
+          </li>
         </ul>
       </nav>
     </header>

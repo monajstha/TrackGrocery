@@ -5,7 +5,6 @@ export interface Item {
   item_price: number;
   item_quantity: number;
   category_id: number;
-  subcategory_id: number;
 }
 
 export let items: Item[] = [];
