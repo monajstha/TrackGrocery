@@ -6,9 +6,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/styles.css" />
     <title></title>
+    <script>
+        function toggleMenu(index) {
+          const menu = document.getElementById(`popupMenu-${index}`);
+      
+          // Close any other open menus first
+          document.querySelectorAll('.popupMenu').forEach(m => {
+            if (m !== menu) m.classList.add('hidden');
+          });
+      
+          // Toggle current menu
+          menu.classList.toggle('hidden');
+        }
+      
+        // Close popup if clicked outside
+        document.addEventListener('click', function(e) {
+          if (!e.target.closest('.menuWrapper')) {
+            document.querySelectorAll('.popupMenu').forEach(m => m.classList.add('hidden'));
+          }
+        });
+      </script>
+
   </head>
   <body>
     <%- include('header') %>
+   
+
+    <!-- Category Select -->
     <form method="get" action="/">
         <select name="category" id="category" onchange="if(this.value===''){window.location='/' } else { this.form.submit(); }">
           <option value="" 
@@ -20,21 +44,38 @@
          <% }) %>
         </select>
     </form>
-    <div class="itemsDiv">
 
+    <!-- Items listing -->
+    <div class="itemsDiv">
       <% items.forEach((item, index) => { %>
         <% const {item_name, item_description, item_image, item_price, item_quantity} = item %>
         <div class="itemContainer">
-            <img class="itemImage" src="<%= item_image %>" alt="">
-          <p><%= item_name %></p>
-          <p><%= item_description %></p>
-          <p><%= item_price %></p>
-          <p> Only <%= item_quantity %> items left</p>
+            <div class="menuWrapper">
+
+                <img id="menuIcon-<%= index %>"  class="menuIcon" src="https://cdn-icons-png.flaticon.com/512/6065/6065255.png" alt="Menu Icon"  onclick="toggleMenu(<%= index %>)">
+    
+                    <!-- Hidden popup menu -->
+                <div id="popupMenu-<%= index %>" class="popupMenu hidden">
+                    <form method="get" action="/item/<%= item.item_id %>/edit">
+                    <button type="submit">Update</button>
+                    </form>
+                    <form method="post" action="/item/<%= item.item_id %>/delete">
+                    <button type="submit">Delete</button>
+                    </form>
+                </div>
+            </div>
+     
+
+            <img class="itemImage" src="<%= item_image %>" alt="Item Image">
+          <p class="itemName"><%= item_name %></p>
+          <p class="itemDescription"><%= item_description %></p>
+          <p class="itemPrice">£<%= item_price %></p>
+          <p class="itemQuantity"> Only <%= item_quantity %> <%= item_quantity <=1 ? "item": "items"%> left</p>
         </div>
-
-
       <%} ) %>
 
     </div>
+
+      
   </body>
 </html>

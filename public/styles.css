@@ -45,13 +45,95 @@ textarea {
   padding: 6px;
 }
 
+.itemsDiv {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  /* background-color: bisque; */
+  gap: 2.5rem;
+}
+
 .itemContainer {
+  padding: 0.5rem;
+  border-radius: 8px;
+  position: relative;
+}
+
+.itemContainer:hover {
+  background-color: aliceblue;
+}
+
+.menuWrapper {
+  /* position: relative; */
+  display: 'inline-block';
   /* background-color: red; */
+}
+
+.menuIcon {
+  position: absolute;
+  top: 10;
+  right: 0;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  opacity: 0;
+  z-index: 10;
+  margin-right: 10px;
+}
+
+.itemContainer:hover .menuIcon {
+  /* display: 'inline-block'; */
+  opacity: 1;
+}
+
+.popupMenu {
+  position: absolute;
+  top: 28px; /* just below the icon */
+  right: 0; /* align with right edge of icon */
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  padding: 5px;
+  z-index: 10;
+}
+
+.popupMenu button {
+  background: none;
+  border: none;
+  padding: 6px 12px;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+}
+
+.popupMenu button:hover {
+  background-color: #f0f0f0;
+}
+
+.hidden {
+  display: none;
 }
 
 .itemImage {
   width: 10rem;
   height: 10rem;
+  margin-bottom: -1rem;
+  border-radius: 8px;
+}
+
+.itemName {
+  font-size: 1.2rem;
+}
+
+.itemDescription {
+  font-size: 0.9rem;
+  margin: -1rem 0 -0.5rem 0;
+}
+
+.itemQuantity {
+  font-size: 0.9rem;
+  margin: -0.8rem 0 8px 0;
 }
 
 .inputContainer {

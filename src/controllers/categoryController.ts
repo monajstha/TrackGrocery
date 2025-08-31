@@ -8,7 +8,6 @@ export const newCategoryFormGet = async (
   next: NextFunction,
 ) => {
   try {
-    console.log('cat path', req.path);
     res.render('addNewCategory', {
       title: 'Categories',
       path: req.path,
@@ -25,7 +24,6 @@ export const newCategoryPost = async (
   next: NextFunction,
 ) => {
   try {
-    console.log('req.body', req.body);
     const { category_name } = req.body;
     await db.insertNewCategory(category_name);
     res.status(201).redirect('/category/new');
