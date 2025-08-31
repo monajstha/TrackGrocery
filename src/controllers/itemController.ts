@@ -24,8 +24,9 @@ export const newItemPost = async (
   next: NextFunction,
 ) => {
   try {
-    console.log('new item', req.body);
-    await db.insertNewItem(req.body);
+    const image_path = req.file ? `/uploads/${req.file.filename}` : null;
+    console.log('Image path', image_path, 'File:', req.file);
+    await db.insertNewItem({ ...req.body, item_image: image_path });
     res.status(201).redirect('/item/new');
   } catch (error) {
     next(error);

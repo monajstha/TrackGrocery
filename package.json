@@ -24,6 +24,7 @@
   "description": "",
   "devDependencies": {
     "@types/express": "^5.0.3",
+    "@types/multer": "^2.0.0",
     "@types/node": "^24.3.0",
     "@types/pg": "^8.15.5",
     "dotenv": "^17.2.1",
@@ -38,6 +39,7 @@
   },
   "dependencies": {
     "ejs": "^3.1.10",
+    "multer": "^2.0.2",
     "path": "^0.12.7",
     "pg": "^8.16.3",
     "tsc-alias": "^1.8.16"
