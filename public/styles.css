@@ -126,6 +126,7 @@ textarea {
   height: 9rem;
   margin-bottom: -1rem;
   border-radius: 8px;
+  background-color: red;
 }
 
 .itemName {
@@ -175,7 +176,43 @@ textarea {
   align-self: center;
 }
 
-/* Update Item */
+/* New Item Form */
+.newItemImageWrapper {
+  position: relative;
+}
+
+.newItemImage {
+  display: none;
+  width: 9rem;
+  height: 9rem;
+  margin-bottom: -1rem;
+  border-radius: 8px;
+}
+
+.newImageDltBtn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 10;
+  right: 10;
+  height: 24px;
+  width: 24px;
+  border-radius: 12px;
+  background-color: white;
+}
+
+.deleteBtn {
+  height: 15px;
+  width: 15px;
+  cursor: pointer;
+}
+
+.newItemImageInput {
+  display: block;
+}
+
+/* Update Item Form */
 .imageDltBtnWrapper {
   position: relative;
 }
@@ -201,4 +238,11 @@ textarea {
 
 .updateItemImageInput {
   display: none;
+}
+
+/* Dialog */
+.dialogBtnWrapper {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
 }

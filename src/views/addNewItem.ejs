@@ -2,6 +2,49 @@
   <head>
     <link rel="stylesheet" href="/styles.css" />
     <script>
+
+    document.addEventListener("DOMContentLoaded", () => {
+    const dialog = document.getElementById("confirmDialog");
+    const deleteBtn = document.getElementById("newImageDltBtn");
+    const cancelBtn = document.getElementById("cancelBtn");
+    const confirmBtn = document.getElementById("confirmBtn");
+    const itemImage = document.getElementById("newItemImage");
+    const fileInput = document.getElementById("newItemImageInput");
+
+    // Open dialog when delete icon clicked
+    deleteBtn.addEventListener("click", () => {
+      dialog.showModal();
+    });
+
+    // Close dialog
+    cancelBtn.addEventListener("click", () => {
+      dialog.close();
+    });
+
+    // Confirm delete
+    confirmBtn.addEventListener("click", () => {
+      dialog.close();
+      itemImage.style.display = "none";
+
+      if (deleteBtn) deleteBtn.style.display = "none";
+      fileInput.style.display = "block"; // show file input
+      fileInput.value = null; // Delete chosen file
+    });
+
+    fileInput.onchange = (e)=>{
+      const [file] = fileInput.files;
+      if (file){
+        console.log({file});
+        itemImage.src = URL.createObjectURL(file);
+        itemImage.style.display = "block";
+        deleteBtn.style.display = "flex"; // Show the delete icon
+        fileInput.style.display = "none" // Hide the file input
+
+      }
+    }
+  });
+
+    
       function validateForm(event) {
         event.preventDefault();
 
@@ -18,6 +61,13 @@
     </script>
   </head>
   <body>
+    <dialog id="confirmDialog">
+      <h4>Are you sure you want to delete this image?</h4>
+      <div class="dialogBtnWrapper">
+        <button id="cancelBtn">Cancel</button>
+        <button id="confirmBtn">Confirm</button>
+      </div>
+    </dialog>
     <%- include('header') %>
     <form
       id="newItemForm"
@@ -51,10 +101,19 @@
 
       <div class="labelInputWrapper">
         <label for="item_image">Item Image</label>
+
+        <div class="newItemImageWrapper">
+          <img id="newItemImage" class="newitemImage" src="" alt="Item Image" />
+         
+          <div id="newImageDltBtn" class="newImageDltBtn">
+            <img class="deleteBtn" src="https://cdn-icons-png.flaticon.com/512/6861/6861362.png" alt="Image Delete Button" /> 
+          </div>
+        </div>
+
         <input
-          class="nameInput"
+          class="newItemImageInput"
           type="file"
-          id="item_image"
+          id="newItemImageInput"
           name="item_image"
         />
       </div>

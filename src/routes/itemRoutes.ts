@@ -1,6 +1,7 @@
 import upload from '../middlewares/upload';
 import { Router } from 'express';
 import {
+  itemDelete,
   itemListGet,
   itemUpdateFormGet,
   itemUpdatePut,
@@ -15,5 +16,6 @@ router.get('/item/new', newItemFormGet);
 router.post('/item/new', upload.single('item_image'), newItemPost);
 router.get('/item/update/:item_id', itemUpdateFormGet);
 router.put('/item/update/:item_id', upload.single('item_image'), itemUpdatePut);
+router.delete('/item/delete/:item_id', itemDelete);
 
 export default router;

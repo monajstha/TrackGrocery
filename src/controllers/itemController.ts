@@ -5,7 +5,6 @@ import * as db from '../db/queries';
 // Get Add New Item Form
 export const newItemFormGet = async (req: Request, res: Response) => {
   try {
-    console.log('path', req.path);
     const categories = await db.getAllCategories();
     res.render('addNewItem', {
       title: 'Items',
@@ -25,9 +24,8 @@ export const newItemPost = async (
 ) => {
   try {
     const image_path = req.file ? `/uploads/${req.file.filename}` : null;
-    console.log('Image path', image_path, 'File:', req.file);
     await db.insertNewItem({ ...req.body, item_image: image_path });
-    res.status(201).redirect('/item/new');
+    res.status(201).redirect('/');
   } catch (error) {
     next(error);
   }
@@ -77,13 +75,31 @@ export const itemUpdatePut = async (
   next: NextFunction,
 ) => {
   try {
-    const { item_id } = req.params;
-    const image_path = req.file ? `/uploads/${req.file.filename}` : null;
-    console.log('Image path', image_path, 'File:', req.file);
+    const { item_id } = req?.params;
+    if (!item_id) return;
+
+    const { item_image } = await db.getItemDetails(item_id);
+    const image_path = req.file ? `/uploads/${req.file.filename}` : item_image;
     await db.updateItem({ item_id, ...req.body, item_image: image_path });
     res.status(200).redirect('/');
   } catch (error) {
     next(error);
-    console.log('Error while updating item: ', error);
+    console.log('Error while updating an item: ', error);
+  }
+};
+
+// Delete an item
+export const itemDelete = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const { item_id } = req.params;
+    await db.deleteItem(item_id);
+    res.status(200).redirect('/');
+  } catch (error) {
+    next(error);
+    console.log('Error while deleting an item: ', error);
   }
 };

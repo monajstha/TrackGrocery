@@ -67,9 +67,10 @@
   <body>
     <dialog id="confirmDialog">
       <h4>Are you sure you want to delete this image?</h4>
-      <p>Deleting the image is irreversible.</p>
-      <button id="cancelBtn">Cancel</button>
-      <button id="confirmBtn">Confirm</button>
+      <div class="dialogBtnWrapper">
+        <button id="cancelBtn">Cancel</button>
+        <button id="confirmBtn">Confirm</button>
+      </div>
     </dialog>
     <%- include('header') %>
     <form
