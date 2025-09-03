@@ -69,3 +69,50 @@ export const insertNewItem = async ({
     console.log('Error while inserting new Category: ', error);
   }
 };
+
+export const getItemDetails = async (item_id: string) => {
+  try {
+    const { rows } = await pool.query(
+      `SELECT * FROM items WHERE item_id = ${item_id}`,
+    );
+    return rows[0];
+  } catch (error) {
+    console.log('Error while updating item: ', error);
+  }
+};
+
+export const updateItem = async ({
+  item_id,
+  item_name,
+  item_description,
+  item_image,
+  item_price,
+  item_quantity,
+  category_id,
+}: Item) => {
+  try {
+    const query = `
+        UPDATE items
+        SET 
+            item_name = $1,
+            item_description = $2,
+            item_image = $3,
+            item_price = $4,
+            item_quantity = $5,
+            category_id = $6,
+            updated_at = NOW()
+        WHERE item_id = $7`;
+    const values = [
+      item_name,
+      item_description,
+      item_image,
+      item_price,
+      item_quantity,
+      category_id,
+      item_id,
+    ];
+    await pool.query(query, values);
+  } catch (error) {
+    console.log('Error while inserting new Category: ', error);
+  }
+};

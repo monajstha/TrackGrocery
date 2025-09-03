@@ -13,7 +13,7 @@ export const newItemFormGet = async (req: Request, res: Response) => {
       path: req.path,
     });
   } catch (error) {
-    console.log('Error while getting items: ', error);
+    console.log('Error while getting new item form: ', error);
   }
 };
 
@@ -33,6 +33,7 @@ export const newItemPost = async (
   }
 };
 
+// Get items
 export const itemListGet = async (req: Request, res: Response) => {
   try {
     const categories = await db.getAllCategories();
@@ -48,5 +49,41 @@ export const itemListGet = async (req: Request, res: Response) => {
     });
   } catch (error) {
     console.log('Error while getting items: ', error);
+  }
+};
+
+// Get update item form
+export const itemUpdateFormGet = async (req: Request, res: Response) => {
+  try {
+    const { item_id } = req?.params;
+    if (!item_id) return;
+    const categories = await db.getAllCategories();
+    const itemDetails = await db.getItemDetails(item_id);
+    res.render('updateItem', {
+      title: 'Items',
+      categories,
+      path: req.path,
+      itemDetails,
+    });
+  } catch (error) {
+    console.log('Error while getting update item form: ', error);
+  }
+};
+
+// Update an item
+export const itemUpdatePut = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const { item_id } = req.params;
+    const image_path = req.file ? `/uploads/${req.file.filename}` : null;
+    console.log('Image path', image_path, 'File:', req.file);
+    await db.updateItem({ item_id, ...req.body, item_image: image_path });
+    res.status(200).redirect('/');
+  } catch (error) {
+    next(error);
+    console.log('Error while updating item: ', error);
   }
 };

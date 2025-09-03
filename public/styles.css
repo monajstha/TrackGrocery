@@ -54,6 +54,12 @@ textarea {
 }
 
 .itemContainer {
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+  justify-content: center;
+  height: 14rem;
+  width: 9rem;
   padding: 0.5rem;
   border-radius: 8px;
   position: relative;
@@ -116,8 +122,8 @@ textarea {
 }
 
 .itemImage {
-  width: 10rem;
-  height: 10rem;
+  width: 9rem;
+  height: 9rem;
   margin-bottom: -1rem;
   border-radius: 8px;
 }
@@ -147,9 +153,13 @@ textarea {
   display: flex;
   padding: 12px;
   align-items: flex-start;
-  width: 50%;
+  width: 80%;
   /* background-color: green; */
   margin: 3px;
+}
+
+.labelInputWrapper > input {
+  width: 60%;
 }
 
 .labelInputWrapper > label {
@@ -163,4 +173,32 @@ textarea {
   width: 40%;
   justify-content: center;
   align-self: center;
+}
+
+/* Update Item */
+.imageDltBtnWrapper {
+  position: relative;
+}
+
+.deleteBtnWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 10;
+  right: 10;
+  height: 24px;
+  width: 24px;
+  border-radius: 12px;
+  background-color: white;
+}
+
+.deleteBtn {
+  height: 15px;
+  width: 15px;
+  cursor: pointer;
+}
+
+.updateItemImageInput {
+  display: none;
 }
