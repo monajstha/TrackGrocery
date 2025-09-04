@@ -15,16 +15,16 @@
         }
 
         // If validation passes, submit the form
-        document.getElementById('newCategoryForm').submit();
+        document.getElementById('updateCategoryForm').submit();
       }
     </script>
   </head>
   <body>
     <%- include('header') %>
     <form
-      id="newCategoryForm"
+      id="updateCategoryForm"
       method="post"
-      action="/categories/new"
+      action="/categories/update/<%= categoryDetails?.category_id %>?_method=PUT"
       onsubmit="validateForm(event)"
     >
       <input
@@ -33,6 +33,7 @@
         id="category_name"
         name="category_name"
         placeholder="Enter Category name"
+        value="<%= categoryDetails?.category_name %>"
       />
 
       <button class="sendBtn" type="submit">Submit</button>

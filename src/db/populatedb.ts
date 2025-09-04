@@ -21,48 +21,6 @@ const SQL_INSERT_QUERY_CATEGORIES = `INSERT INTO categories (category_name) VALU
 // Dummy Categories
 const CATEGORIES = ['Bakery', 'Dairy', 'Produce', 'Meat', 'Pantry'];
 
-// Creating Subcategories table
-const SQL_CREATE_TABLE_SUBCATEGORIES = `
-  CREATE TABLE IF NOT EXISTS subcategories (
-    subcategory_id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    subcategory_name VARCHAR(255) NOT NULL,
-    category_id INTEGER REFERENCES categories(category_id),
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
-  );
-`;
-
-// Insert query for subcategories
-const SQL_INSERT_QUERY_SUBCATEGORIES = `INSERT INTO subcategories (subcategory_name, category_id) VALUES ($1, $2)`;
-
-// Dummy Subcategories
-const SUBCATEGORIES = [
-  {
-    name: 'Vegetables',
-    category_id: 3,
-  },
-  {
-    name: 'Fruits',
-    category_id: 3,
-  },
-  {
-    name: 'Dry Goods',
-    category_id: 5,
-  },
-  {
-    name: 'Canned Goods',
-    category_id: 5,
-  },
-  {
-    name: 'Baking',
-    category_id: 5,
-  },
-  {
-    name: 'Condiments and Spices',
-    category_id: 5,
-  },
-];
-
 const SQL_CREATE_TABLE_ITEMS = `
 CREATE TABLE IF NOT EXISTS items (
   item_id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
@@ -71,8 +29,7 @@ CREATE TABLE IF NOT EXISTS items (
   item_image VARCHAR(255) NOT NULL,
   item_price INTEGER NOT NULL,
   item_quantity INTEGER NOT NULL,
-  category_id INTEGER NOT NULL REFERENCES categories(category_id),
-  subcategory_id INTEGER REFERENCES subcategories(subcategory_id) DEFAULT NULL,
+  category_id INTEGER REFERENCES categories(category_id) DEFAULT NULL,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 )`;
@@ -92,7 +49,6 @@ const ITEMS = [
     item_price: [2, 3, 4, 3],
     item_quantity: [2, 3, 1, 2],
     category_id: 1,
-    subcategory_id: null,
   },
   {
     item_name: 'Yogurt',
@@ -102,7 +58,6 @@ const ITEMS = [
     item_price: 3,
     item_quantity: 1,
     category_id: 2,
-    subcategory_id: null,
   },
   {
     item_name: ['Broccoli', 'Cauliflower', 'Lettuce'],
@@ -115,7 +70,6 @@ const ITEMS = [
     item_price: [3, 4, 5],
     item_quantity: [1, 2, 1],
     category_id: 5,
-    subcategory_id: 1,
   },
 ];
 
@@ -133,15 +87,6 @@ const main = async () => {
       await client.query(SQL_INSERT_QUERY_CATEGORIES, [category]);
     }
 
-    // For Subcategories
-    await client.query(SQL_CREATE_TABLE_SUBCATEGORIES);
-    for (let subcategory of SUBCATEGORIES) {
-      await client.query(SQL_INSERT_QUERY_SUBCATEGORIES, [
-        subcategory.name,
-        subcategory.category_id,
-      ]);
-    }
-
     // For Items
     await client.query(SQL_CREATE_TABLE_ITEMS);
     for (let item of ITEMS) {
@@ -152,7 +97,6 @@ const main = async () => {
         item_price,
         item_quantity,
         category_id,
-        subcategory_id,
       } = item;
       if (
         Array.isArray(item_name) &&
@@ -160,26 +104,26 @@ const main = async () => {
         Array.isArray(item_quantity)
       ) {
         for (let i = 0; i < item_name?.length; i++) {
-          await client.query(SQL_INSERT_QUERY_ITEMS, [
+          const values = [
             item_name[i],
             item_description[i],
             item_image[i],
             item_price[i],
             item_quantity[i],
             category_id,
-            subcategory_id,
-          ]);
+          ];
+          await client.query(SQL_INSERT_QUERY_ITEMS, values);
         }
       } else {
-        await client.query(SQL_INSERT_QUERY_ITEMS, [
+        const values = [
           item_name,
           item_description,
           item_image,
           item_price,
           item_quantity,
           category_id,
-          subcategory_id,
-        ]);
+        ];
+        await client.query(SQL_INSERT_QUERY_ITEMS, values);
       }
     }
     console.log('Seeding Completed');

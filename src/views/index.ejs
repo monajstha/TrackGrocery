@@ -71,7 +71,7 @@
 
     <!-- Category Select -->
     <form method="get" action="/">
-        <select name="category" id="category" onchange="if(this.value===''){window.location='/' } else { this.form.submit(); }">
+        <select class="categorySelect" name="category" id="category" onchange="if(this.value===''){window.location='/' } else { this.form.submit(); }">
           <option value="" 
           <%= selectedCategory == "" ? "selected" : "" %>>All</option>
           <% categories.forEach((category, index)=> { %>
@@ -93,9 +93,9 @@
     
                     <!-- Hidden popup menu -->
                 <div id="popupMenu-<%= index %>" class="popupMenu hidden">
-                    <form method="get" action="/item/update/<%= item_id %>">
+                    <a href="/item/update/<%= item_id %>">
                         <button type="submit">Update</button>
-                    </form>
+                    </a>
                     <form id="deleteForm-<%= item_id %>" method="post" action="/item/delete/<%= item_id %>?_method=DELETE">
                         <button id="deleteBtn-<%= item_id %>" type="button">Delete</button>
                     </form>

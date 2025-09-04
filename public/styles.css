@@ -246,3 +246,79 @@ textarea {
   justify-content: flex-end;
   gap: 12px;
 }
+
+.categorySelect,
+.addNewCategoryBtn {
+  display: flex;
+  justify-self: flex-end;
+  width: 12rem;
+  height: 2rem;
+  margin: -8px 1.3rem 8px 0;
+  cursor: pointer;
+}
+
+.addNewCategoryBtn {
+  align-items: center;
+  justify-content: center;
+}
+
+.catMenuIcon {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  opacity: 0;
+  z-index: 10;
+  margin-right: 10px;
+}
+
+.catPopupMenu {
+  position: absolute;
+  top: 36px; /* just below the icon */
+  right: 0; /* align with right edge of icon */
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  padding: 5px;
+  z-index: 10;
+}
+
+.categoryContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  height: 8rem;
+  width: 9rem;
+  padding: 0.5rem;
+  border-radius: 8px;
+  position: relative;
+}
+
+.categoryContainer:hover {
+  background-color: aliceblue;
+}
+
+.categoryContainer:hover .catMenuIcon {
+  /* display: 'inline-block'; */
+  opacity: 1;
+}
+
+.catPopupMenu button {
+  background: none;
+  border: none;
+  padding: 6px 12px;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+}
+
+.catPopupMenu button:hover {
+  background-color: #f0f0f0;
+}
+
+.catName {
+  margin: -5px 0;
+}

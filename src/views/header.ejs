@@ -13,8 +13,10 @@
             <a href="/" class="<%= path === '/'? 'active': ''%>">Home</a>
           </li>
           <li>
-            <a href="/category/new" class="<%= path === '/new'? 'active': ''%>"
-              >Add Category</a
+            <a
+              href="/categories"
+              class="<%= path.startsWith('/categories') ? 'active': ''%>"
+              >Categories</a
             >
           </li>
 

@@ -18,7 +18,7 @@ app.set('view engine', 'ejs');
 
 // Routes
 app.use('/', itemRoutes);
-app.use('/category/', categoryRoutes);
+app.use('/categories', categoryRoutes);
 
 // serve static assets
 const assetsPath = path.join(__dirname, '../public');

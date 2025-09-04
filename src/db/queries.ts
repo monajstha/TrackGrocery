@@ -2,10 +2,24 @@ import pool from './pool';
 import { Item, items } from 'src/models/item';
 import { Category } from 'src/models/category';
 
-export const getAllCategories = async () => {
+export const getAllCategories = async (): Promise<Category[]> => {
   try {
     const { rows } = await pool.query('SELECT * FROM categories');
     return rows;
+  } catch (error) {
+    console.log('Error while getting Categories: ', error);
+    throw error;
+  }
+};
+
+export const getCategoryDetails = async (category_id: string) => {
+  try {
+    const query = `
+        SELECT * FROM categories
+        WHERE category_id = $1`;
+    const values = [category_id];
+    const { rows } = await pool.query(query, values);
+    return rows[0];
   } catch (error) {
     console.log('Error while getting Categories: ', error);
   }
@@ -25,12 +39,70 @@ export const insertNewCategory = async (name: String) => {
   }
 };
 
+export const updateCategory = async ({
+  category_id,
+  category_name,
+}: Category) => {
+  try {
+    const query = `
+          UPDATE categories
+          SET 
+              category_name = $1,
+              updated_at = NOW()
+          WHERE category_id = $2`;
+    const values = [category_name, category_id];
+    await pool.query(query, values);
+  } catch (error) {
+    console.log('Error while updating Item: ', error);
+  }
+};
+
 export const getAllSubcategories = async () => {
   try {
     const { rows } = await pool.query('SELECT * FROM subcategories');
     return rows;
   } catch (error) {
     console.log('Error while getting Subcategories: ', error);
+  }
+};
+
+export const categoryReferencedByItemsCount = async (category_id: any) => {
+  try {
+    const query = `
+        SELECT 
+        COUNT(*) 
+        FROM 
+        items
+        WHERE 
+        category_id = $1`;
+    const values = [category_id];
+    const { rows } = await pool.query(query, values);
+    return rows[0];
+  } catch (error) {
+    console.log(
+      'Error while getting the number of items referenced to a category: ',
+      error,
+    );
+  }
+};
+
+export const deleteCategory = async (category_id: any) => {
+  try {
+    const deletedCategoryReferenceNullQuery = `
+        UPDATE items
+        SET category_id = NULL
+        WHERE category_id = $1
+    `;
+
+    const deleteCategoryQuery = `
+          DELETE FROM categories
+          WHERE
+          category_id = $1`;
+    const values = [category_id];
+    await pool.query(deletedCategoryReferenceNullQuery, values);
+    await pool.query(deleteCategoryQuery, values);
+  } catch (error) {
+    console.log('Error while deleting category from db:', error);
   }
 };
 
@@ -42,6 +114,7 @@ export const getAllItems = async (category: any) => {
       query += ' WHERE category_id = $1';
       values.push(category);
     }
+    query += ' ORDER BY item_id';
     const { rows } = await pool.query(query, values);
     return rows;
   } catch (error) {

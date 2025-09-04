@@ -1,8 +1,6 @@
 export interface Category {
-  id: string;
-  name: string;
-  created_at: Date;
-  updated_at: Date;
+  category_id: string;
+  category_name: string;
 }
 
 export let categories: Category[] = [];
