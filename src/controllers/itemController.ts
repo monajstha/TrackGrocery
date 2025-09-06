@@ -1,6 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
-import { Item, items } from '../models/item';
-import * as db from '../db/queries';
+// import { Item, items } from '@models/item';
+import * as db from '@db/queries';
+import { validationResult } from 'express-validator';
+import path from 'path';
+import fs from 'fs';
+import { AppError } from '@middlewares/errorHandler';
 
 // Get Add New Item Form
 export const newItemFormGet = async (req: Request, res: Response) => {
@@ -23,6 +27,27 @@ export const newItemPost = async (
   next: NextFunction,
 ) => {
   try {
+    const errors = validationResult(req);
+    console.log(errors);
+    if (!errors.isEmpty()) {
+      // cleanup uploaded file if present
+      if (req.file) {
+        const fp = path.join(
+          __dirname,
+          '../../public/uploads',
+          req.file.filename,
+        );
+        fs.unlink(fp, (err) => {
+          if (err) console.error('Failed to remove file: ', err);
+        });
+      }
+      const err = new Error('Validation Failed') as AppError;
+      err.status = 400;
+      // attach validation errors in a property
+      (err as any).errors = errors.array();
+      return next(err);
+    }
+
     const image_path = req.file ? `/uploads/${req.file.filename}` : null;
     await db.insertNewItem({ ...req.body, item_image: image_path });
     res.status(201).redirect('/');
@@ -32,7 +57,11 @@ export const newItemPost = async (
 };
 
 // Get items
-export const itemListGet = async (req: Request, res: Response) => {
+export const itemListGet = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const categories = await db.getAllCategories();
     const { category } = req.query;
@@ -46,6 +75,7 @@ export const itemListGet = async (req: Request, res: Response) => {
       selectedCategory: category,
     });
   } catch (error) {
+    next(error);
     console.log('Error while getting items: ', error);
   }
 };

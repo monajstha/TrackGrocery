@@ -144,14 +144,14 @@ export const insertNewItem = async ({
       item_name,
       item_description,
       item_image,
-      item_price,
+      typeof item_price === 'number' ? item_price.toFixed(2) : item_price,
       item_quantity,
       category_id,
     ];
 
     await pool.query(query, values);
   } catch (error) {
-    console.log('Error while inserting new Item: ', error);
+    console.log('Error while inserting new Item db: ', error);
   }
 };
 
@@ -215,5 +215,20 @@ export const deleteItem = async (item_id: any) => {
     await pool.query(query, values);
   } catch (error) {
     console.log('Error while deleting item from db:', error);
+  }
+};
+
+export const getAdminCredentials = async () => {
+  try {
+    const query = `
+            SELECT * FROM admin
+            WHERE 
+            admin_id = $1
+            `;
+    const values = [1];
+    const { rows } = await pool.query(query, values);
+    return rows[0];
+  } catch (error) {
+    console.log('Error while getting admin credentials from db: ', error);
   }
 };

@@ -6,7 +6,7 @@ import {
   categoryUpdatePut,
   newCategoryFormGet,
   newCategoryPost,
-} from '../controllers/categoryController';
+} from '@controllers/categoryController';
 
 const categoryRouter: Router = Router();
 
