@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS items (
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 )`;
 
-const SQL_INSERT_QUERY_ITEMS = `INSERT INTO items (item_name, item_description, item_image, item_price, item_quantity, category_id, subcategory_id) VALUES ($1, $2, $3, $4, $5, $6, $7)`;
+const SQL_INSERT_QUERY_ITEMS = `INSERT INTO items (item_name, item_description, item_image, item_price, item_quantity, category_id) VALUES ($1, $2, $3, $4, $5, $6)`;
 
 const ITEMS = [
   {
@@ -47,7 +47,7 @@ const ITEMS = [
       'https://media.istockphoto.com/id/450752471/photo/homemade-organic-apple-pie-dessert.jpg?s=612x612&w=0&k=20&c=6mwKTunGfRKFWyB_VUOGqXzcUMtBSCvg6JAQ3At2aWE=',
       'https://img.freepik.com/free-photo/world-diabetes-day-sugar-wooden-bowl-dark-surface_1150-26666.jpg?semt=ais_hybrid&w=740&q=80',
     ],
-    item_price: [2, 3, 4, 3],
+    item_price: [2.4, 3.3, 4, 3.35],
     item_quantity: [2, 3, 1, 2],
     category_id: 1,
   },
@@ -56,7 +56,7 @@ const ITEMS = [
     item_description: 'I love Yogurt',
     item_image:
       'https://media.istockphoto.com/id/515777808/photo/yogurt.jpg?s=612x612&w=0&k=20&c=1xNf2q0hmndqAbqyTUUv6F_GbBhhCZkGHbiOERz91LE=',
-    item_price: 3,
+    item_price: 3.6,
     item_quantity: 1,
     category_id: 2,
   },
@@ -68,7 +68,7 @@ const ITEMS = [
       'https://media.istockphoto.com/id/90634594/photo/close-up-of-several-heads-of-cauliflower.jpg?s=612x612&w=0&k=20&c=hpYY7BqSUNwM-oq26wNv5pGLSPf4HijXr3zA0J3yd0E=',
       'https://media.istockphoto.com/id/535910387/photo/ripe-organic-green-salad-romano.jpg?s=612x612&w=0&k=20&c=9GTcj_WqUk9LWkzUb6g4MCnLTPAapT_hNMZCHRd3C1U=',
     ],
-    item_price: [3, 4, 5],
+    item_price: [3, 4.5, 5],
     item_quantity: [1, 2, 1],
     category_id: 3,
   },

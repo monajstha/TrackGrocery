@@ -1,4 +1,4 @@
-import express, { Express } from 'express';
+import express, { Request, Response, Express, NextFunction } from 'express';
 import { errorHandler } from '@middlewares/errorHandler';
 import itemRoutes from '@routes/itemRoutes';
 import categoryRoutes from '@routes/categoryRoutes';
@@ -25,6 +25,13 @@ app.use('/auth', authRoutes);
 // serve static assets
 const assetsPath = path.join(__dirname, '../public');
 app.use(express.static(assetsPath));
+
+// Handle all unmatched routes
+app.use((req: Request, res: Response, next: NextFunction) => {
+  const error = new Error("The page you are looking for isn't here :(");
+  (error as any).status = 404;
+  next(error);
+});
 
 // Global error handler
 app.use(errorHandler);
