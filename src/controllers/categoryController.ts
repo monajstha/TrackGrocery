@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { Category } from 'src/models/category';
-import * as db from '../db/queries';
+import * as db from '@db/queries';
 
 // Get category form
 export const newCategoryFormGet = async (

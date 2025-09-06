@@ -7,36 +7,93 @@
     <link rel="stylesheet" href="/styles.css" />
     <title></title>
     <script>
-        document.addEventListener("DOMContentLoaded", ()=>{       
-            const dialog = document.getElementById("confirmDialog");
-            const cancelBtn = document.getElementById("cancelBtn");
-            const confirmBtn = document.getElementById("confirmBtn");
+       
+       
+  let isAdmin = false; // Flag to remember if credentials were validated
+  let action = '';
 
-            let formToSubmit = null; // Store the form to submit
-            
-            // Show Dialog
-            document.querySelectorAll("[id^='deleteBtn-']").forEach((btn)=>{
-                btn.addEventListener("click", ()=>{
-                    const item_id = btn.id.split("-")[1];
-                    formToSubmit = document.getElementById(`deleteForm-${item_id}`);
-                    dialog.showModal();
-                })
-            })
+  document.addEventListener("DOMContentLoaded", () => {
+    const dialogs = document.querySelectorAll('[id*="credentialsDialog"]');
+    const updateBtns = document.querySelectorAll('[id*="updateBtn"]');
+    const deleteBtns = document.querySelectorAll('[id*="deleteBtn"]');
 
-            // Confirm button submits the form
-            confirmBtn.addEventListener("click", ()=>{
-                if (!formToSubmit) return;
-                formToSubmit.submit();
-            })
+    const submitCredentialBtns = document.querySelectorAll('[id*="submitCredentialsBtn"]');
 
-            // Close dialog
-            cancelBtn.addEventListener("click", () => {
-                dialog.close();
-            })
-        })
+    // Show dialog only if isAdmin is false
+    function handleActionClick(itemId, actionType) {
+      if (isAdmin) {
+        // perform the action directly
+        if (actionType === "update") {
+          window.location.href = `/item/update/${itemId}`;
+        } else if (actionType === "delete") {
+          document.getElementById(`deleteForm-${itemId}`).submit();
+        }
+        return;
+      }
 
-        function toggleMenu(index) {
-          const menu = document.getElementById(`popupMenu-${index}`);
+      // Show the credentials dialog
+      const dialog = document.getElementById(`credentialsDialog-${itemId}`);
+      dialog.showModal();
+    }
+
+
+    // Attach click events to update/delete buttons
+    updateBtns.forEach((btn) => {
+      const itemId = btn.id.split("-")[1];
+      btn.addEventListener("click", (e) => {action='update'; handleActionClick(itemId, "update")});
+    });
+
+    deleteBtns.forEach((btn) => {
+      const itemId = btn.id.split("-")[1];
+      btn.addEventListener("click", (e) => {action='delete';handleActionClick(itemId, "delete")});
+    });
+
+    // Handle credential form submission
+    submitCredentialBtns.forEach((btn) => {
+      const itemId = btn.id.split("-")[1];
+
+      btn.addEventListener("click", async (e) => {
+        e.preventDefault();
+        const form = document.getElementById(`credentialsForm-${itemId}`);
+
+        // Make POST request to your auth endpoint
+        const res = await fetch(form.action, {
+          method: "POST",
+          headers: {'Content-Type': "application/json"},
+          body: JSON.stringify({
+            username: form.username.value,
+            password: form.password.value,
+          }),
+        });
+        console.log('ress',res);
+        if (res.ok) {
+          isAdmin = true; // Set flag so user won't see dialog again
+          const dialog = document.getElementById(`credentialsDialog-${itemId}`);
+          dialog.close();
+
+          alert("Credentials validated. You can now perform actions.");
+          handleActionClick(itemId, action);
+        } else {
+          alert("Invalid credentials.");
+        }
+      });
+    });
+
+    // Handle dialog cancel buttons
+    const cancelBtns = document.querySelectorAll('[id*="cancelCredentialsBtn"]');
+    cancelBtns.forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        const itemId = btn.id.split("-")[1];
+        const dialog = document.getElementById(`credentialsDialog-${itemId}`);
+        dialog.close();
+      });
+    });
+  });
+
+    
+        function toggleMenu(item_id) {
+          const menu = document.getElementById(`popupMenu-${item_id}`);
       
           // Close any other open menus first
           document.querySelectorAll('.popupMenu').forEach(m => {
@@ -67,6 +124,8 @@
             <button id="confirmBtn">Confirm</button>
         </div>
       </dialog>
+
+ 
    
 
     <!-- Category Select -->
@@ -87,15 +146,28 @@
       <% items.forEach((item, index) => { %>
         <% const {item_id, item_name, item_description, item_image, item_price, item_quantity} = item %>
         <div class="itemContainer">
+        <!-- Credentials dialog -->
+        <dialog id="credentialsDialog-<%= item_id%>">
+            <form id="credentialsForm-<%= item_id%>" method="post" action="/auth">
+                <h4>Credentials Required!</h4>
+                <p>This action can only be performed by an admin. Please enter your username and password.</p>
+
+                <input id="username-<%= item_id%>" style="display: block; margin:5px 0" type="text" name="username" placeholder="Enter your username"/>
+                <input id="password-<%= item_id%>"  type="password" name="password" placeholder="Enter your password"/>
+
+                <div class="dialogBtnWrapper">
+                    <button id="cancelCredentialsBtn-<%= item_id%>">Cancel</button>
+                    <button id="submitCredentialsBtn-<%= item_id%>" type="submit">Submit</button>
+                </div>
+            </form>
+        </dialog>
             <div class="menuWrapper">
 
-                <img id="menuIcon-<%= index %>"  class="menuIcon" src="https://cdn-icons-png.flaticon.com/512/6065/6065255.png" alt="Menu Icon"  onclick="toggleMenu(<%= index %>)">
+                <img id="menuIcon-<%= item_id %>"  class="menuIcon" src="https://cdn-icons-png.flaticon.com/512/6065/6065255.png" alt="Menu Icon"  onclick="toggleMenu(<%= item_id %>)">
     
                     <!-- Hidden popup menu -->
-                <div id="popupMenu-<%= index %>" class="popupMenu hidden">
-                    <a href="/item/update/<%= item_id %>">
-                        <button type="submit">Update</button>
-                    </a>
+                <div id="popupMenu-<%= item_id %>" class="popupMenu hidden">
+                        <button id="updateBtn-<%= item_id %>">Update</button>
                     <form id="deleteForm-<%= item_id %>" method="post" action="/item/delete/<%= item_id %>?_method=DELETE">
                         <button id="deleteBtn-<%= item_id %>" type="button">Delete</button>
                     </form>

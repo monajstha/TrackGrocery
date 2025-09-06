@@ -1,7 +1,8 @@
 import express, { Express } from 'express';
-import { errorHandler } from './middlewares/errorHandler';
-import itemRoutes from './routes/itemRoutes';
-import categoryRoutes from './routes/categoryRoutes';
+import { errorHandler } from '@middlewares/errorHandler';
+import itemRoutes from '@routes/itemRoutes';
+import categoryRoutes from '@routes/categoryRoutes';
+import authRoutes from '@routes/authRoutes';
 import path from 'path';
 import methodOverride from 'method-override';
 
@@ -19,6 +20,7 @@ app.set('view engine', 'ejs');
 // Routes
 app.use('/', itemRoutes);
 app.use('/categories', categoryRoutes);
+app.use('/auth', authRoutes);
 
 // serve static assets
 const assetsPath = path.join(__dirname, '../public');

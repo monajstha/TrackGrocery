@@ -3,7 +3,8 @@ import { Client } from 'pg';
 
 dotenv.config();
 
-const { DB_USER, DB_NAME, DB_PASSWORD, DB_PORT, DB_HOST } = process.env;
+const { DB_USER, DB_NAME, DB_PASSWORD, DB_PORT, DB_HOST, USERNAME, PASSWORD } =
+  process.env;
 
 // Creating Categories table
 const SQL_CREATE_TABLE_CATEGORIES = `
@@ -27,7 +28,7 @@ CREATE TABLE IF NOT EXISTS items (
   item_name VARCHAR(255) NOT NULL,
   item_description VARCHAR (255) NOT NULL,
   item_image VARCHAR(255) NOT NULL,
-  item_price INTEGER NOT NULL,
+  item_price NUMERIC(10,2) NOT NULL,
   item_quantity INTEGER NOT NULL,
   category_id INTEGER REFERENCES categories(category_id) DEFAULT NULL,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -69,9 +70,20 @@ const ITEMS = [
     ],
     item_price: [3, 4, 5],
     item_quantity: [1, 2, 1],
-    category_id: 5,
+    category_id: 3,
   },
 ];
+
+const SQL_CREATE_TABLE_ADMIN = `
+CREATE TABLE IF NOT EXISTS admin (
+  admin_id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+  username VARCHAR(255) NOT NULL,
+  password VARCHAR(255) NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+)`;
+
+const SQL_INSERT_QUERY_ADMIN = `INSERT INTO admin (username, password) VALUES ($1, $2)`;
 
 const main = async () => {
   console.log('Seeding Database...');
@@ -126,6 +138,11 @@ const main = async () => {
         await client.query(SQL_INSERT_QUERY_ITEMS, values);
       }
     }
+
+    // For Admin
+    await client.query(SQL_CREATE_TABLE_ADMIN);
+    await client.query(SQL_INSERT_QUERY_ADMIN, [USERNAME, PASSWORD]);
+
     console.log('Seeding Completed');
   } catch (error) {
     console.log('Error seeding database', error);
