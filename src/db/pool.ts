@@ -1,10 +1,11 @@
 import pg from 'pg';
-import { getDB_URL } from './dbConfig';
+import dotenv from 'dotenv';
 
+dotenv.config();
 const { Pool } = pg;
 
 const pool = new Pool({
-  connectionString: getDB_URL(),
+  connectionString: process.env.PROD_DATABASE_URL,
 });
 
 export default pool;
