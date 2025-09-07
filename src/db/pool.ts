@@ -9,6 +9,10 @@ console.log('NODE ENV: ', NODE_ENV);
 const pool = new Pool({
   connectionString:
     NODE_ENV === 'production' ? PROD_DATABASE_URL : LOCAL_DATABASE_URL,
+  // Comment the ssl for development
+  ssl: {
+    rejectUnauthorized: false,
+  },
 });
 
 export default pool;
