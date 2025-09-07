@@ -3,7 +3,7 @@ import { Client } from 'pg';
 
 dotenv.config();
 
-const { DB_USER, DB_NAME, DB_PASSWORD, DB_PORT, DB_HOST, USERNAME, PASSWORD } =
+const { NODE_ENV, LOCAL_DATABASE_URL, PROD_DATABASE_URL, USERNAME, PASSWORD } =
   process.env;
 
 // Creating Categories table
@@ -33,7 +33,8 @@ CREATE TABLE IF NOT EXISTS items (
   category_id INTEGER REFERENCES categories(category_id) DEFAULT NULL,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
-)`;
+);
+`;
 
 const SQL_INSERT_QUERY_ITEMS = `INSERT INTO items (item_name, item_description, item_image, item_price, item_quantity, category_id) VALUES ($1, $2, $3, $4, $5, $6)`;
 
@@ -86,9 +87,10 @@ CREATE TABLE IF NOT EXISTS admin (
 const SQL_INSERT_QUERY_ADMIN = `INSERT INTO admin (username, password) VALUES ($1, $2)`;
 
 const main = async () => {
-  console.log('Seeding Database...');
+  console.log(`Seeding ${NODE_ENV}  Database...`);
   const client = new Client({
-    connectionString: `postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}`,
+    connectionString:
+      NODE_ENV === 'production' ? PROD_DATABASE_URL : LOCAL_DATABASE_URL,
   });
   try {
     await client.connect();
